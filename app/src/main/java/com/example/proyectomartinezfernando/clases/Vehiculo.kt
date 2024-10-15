@@ -1,6 +1,7 @@
 package com.example.proyectomartinezfernando.clases
 
 import androidx.annotation.DrawableRes
+import com.example.proyectomartinezfernando.R
 
 open class Vehiculo() {
     val precioDia : Int = 0
@@ -8,7 +9,7 @@ open class Vehiculo() {
     val type : String = ""
 
     @DrawableRes
-    val imagen : Int = 0
+    val imagen : Int = R.drawable.cocheprueba
 
     constructor(
             precioDia : Int , gps : Boolean , @DrawableRes imagen : Int
