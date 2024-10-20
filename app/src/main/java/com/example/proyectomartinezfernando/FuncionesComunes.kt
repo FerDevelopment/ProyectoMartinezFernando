@@ -152,7 +152,7 @@ class FuncionesComunes {
                // Mostrar CVC (también enmascarado por seguridad)
                Row {
                   Text(
-                     text = stringResource(R.string.cvc) + ": " + enmascararCVC(tarjeta.cvc),
+                     text = stringResource(R.string.cvc) + ": " + enmascararCVC(),
                      fontSize = 16.sp,
                      fontWeight = FontWeight.Normal
                   )
