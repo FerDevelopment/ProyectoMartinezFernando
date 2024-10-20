@@ -1,5 +1,6 @@
 package com.example.proyectomartinezfernando.clases
 
-class Moto : Vehiculo()
-{
+class Moto() : Vehiculo() {
+   constructor(type: String) : this()
+
 }

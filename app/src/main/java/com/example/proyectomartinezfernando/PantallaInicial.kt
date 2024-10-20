@@ -17,115 +17,77 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
+import androidx.navigation.NavController
 import com.example.proyectomartinezfernando.clases.User
 
 @Composable
-fun PantallaInicial(modifier : Modifier = Modifier) {
-    Column(
-        modifier = modifier
-                .padding(15.dp)
-                .fillMaxHeight() ,
-        verticalArrangement = Arrangement.SpaceBetween
-          ) {
-        TarjetaUser()
-        Botones()
-    }
+fun PantallaInicial(modifier: Modifier = Modifier,
+                    user: User = User(),
+                    navController: NavController
+) {
+   Column(
+      modifier = modifier
+         .padding(15.dp)
+         .fillMaxHeight(),
+      verticalArrangement = Arrangement.SpaceBetween
+   ) {
+      TarjetaUser(user)
+      Botones(navController)
+   }
 }
 
 @Composable
-fun TarjetaUser() {
-    Card(
-        modifier = Modifier
-                .fillMaxWidth()
-        ) {
-        Column(modifier = Modifier.padding(10.dp)) {
-            Row(
-                modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth() ,
-                horizontalArrangement = Arrangement.Center
-               ) {
-                Image(
-                    painter = painterResource(user.fotoPerfil) ,
-                    contentDescription = stringResource(R.string.foto_de_perfil) ,
-                    modifier = Modifier.size(120.dp) ,
-                    contentScale = ContentScale.Fit
-                     )
+fun TarjetaUser(user: User) {
+   Card(
+      modifier = Modifier
+         .fillMaxWidth()
+   ) {
+      Column(modifier = Modifier.padding(10.dp)) {
+         Row(
+            modifier = Modifier
+               .padding(10.dp)
+               .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+         ) {
+            Image(
+               painter = painterResource(user.fotoPerfil),
+               contentDescription = stringResource(R.string.foto_de_perfil),
+               modifier = Modifier.size(120.dp),
+               contentScale = ContentScale.Fit
+            )
+         }
+         Row {
+            Column(horizontalAlignment = Alignment.Start) {
+               FuncionesComunes().SacarInfoUser(user)
             }
-            Row() {
-                Column(horizontalAlignment = Alignment.Start) {
-                    Row {
-                        Text(
-                            text = "Nombre" + ": " ,
-                            fontSize = 4.em ,
-                            fontWeight = FontWeight.Bold
-                            )
-                        Text(user.nombre , fontSize = 4.em)
-                    }
-                    Row {
-                        Text(
-                            text = "Apellidos" + ": " ,
-                            fontSize = 4.em ,
-                            fontWeight = FontWeight.Bold
-                            )
-                        Text(user.apellido , fontSize = 4.em)
-                    }
-
-                    Row {
-                        Text(
-                            text = "Teléfono" + ": " ,
-                            fontSize = 4.em ,
-                            fontWeight = FontWeight.Bold
-                            )
-                        Text(user.telefono , fontSize = 4.em)
-                    }
-
-                    Row {
-                        Text(
-                            text = "Usuario" + ": " ,
-                            fontSize = 4.em ,
-                            fontWeight = FontWeight.Bold
-                            )
-                        Text(user.nombreUser , fontSize = 4.em)
-                    }
-
-                    Row {
-                        Text(
-                            text = "Correo" + ": " ,
-                            fontSize = 4.em ,
-                            fontWeight = FontWeight.Bold
-                            )
-                        Text(user.correo , fontSize = 4.em)
-                    }
-                }
-            }
-        }
-    }
+         }
+      }
+   }
 
 }
 
 @Composable
-fun Botones() {
-    Row(
-        modifier = Modifier.fillMaxWidth() ,
-        horizontalArrangement = Arrangement.SpaceAround
-       ) {
-        /*Boton 1 -->  Listar Pedidos*/
-        Button(onClick =
-        {
-        }
-              ) {
-            Text(stringResource(R.string.lista_pedidos))
-        }
-        /*Boton2 --> Realizar Pedido*/
+private fun Botones(navController: NavController) {
+   Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceAround
+   ) {
+      /*Boton 1 -->  Listar Pedidos*/
+      Button(onClick =
+      {
+         navController.navigate("lista_pedidos")
+      }
+      ) {
+         Text(stringResource(R.string.lista_pedidos))
+      }
+      /*Boton2 --> Realizar Pedido*/
 
-        Button(onClick =
-        {
-        }) {
-            Text(stringResource(R.string.hacer_pedido))
-        }
-    }
+      Button(onClick =
+      {
+         navController.navigate("crear_pedido")
+      }) {
+         Text(stringResource(R.string.hacer_pedido))
+      }
+   }
 }

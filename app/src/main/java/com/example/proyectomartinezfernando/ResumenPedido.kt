@@ -1,2 +1,56 @@
 package com.example.proyectomartinezfernando
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.proyectomartinezfernando.clases.Pedido
+
+@Composable
+fun ResumenPedido(modifier: Modifier, navController: NavHostController, pedido: Pedido = Pedido()) {
+   Column(
+      modifier
+         .padding(15.dp)
+         .fillMaxHeight(),
+      verticalArrangement = Arrangement.SpaceBetween
+   ) {
+      FuncionesComunes().ImprimirCardPedido(pedido)
+      Botones(navController)
+   }
+
+}
+
+@Composable
+private fun Botones(navController: NavController) {
+   Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceAround
+   ) {
+      /*Boton 1 -->  Listar Pedidos*/
+      Button(onClick =
+      {
+         navController.navigate("crear_pedido")
+      }
+      ) {
+         Text(stringResource(R.string.cambiar_datos))
+      }
+      /*Boton2 --> Realizar Pedido*/
+
+      Button(onClick =
+      {
+         navController.navigate("formulario_pago")
+      }) {
+         Text(stringResource(R.string.pagar))
+      }
+   }
+}

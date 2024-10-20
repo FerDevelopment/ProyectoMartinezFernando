@@ -1,7 +1,45 @@
 <resources>
-    <string name="app_name">ProyectoMartinezFernando</string>
+    <string name="app_name" translatable="false">ProyectoMartinezFernando</string>
     <string name="foto_de_perfil">Foto de perfil</string>
     <string name="lista_pedidos">Lista pedidos</string>
     <string name="hacer_pedido">Hacer pedido</string>
     <string name="tipo_de_vehiculo">Tipo de vehiculo</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="tel_fono">Teléfono</string>
+    <string name="usuario">Usuario</string>
+    <string name="correo">Correo</string>
+    <string name="total_pedido">Total pedido: %1$s €</string>
+    <string name="gps" translatable="false">GPS</string>
+    <string name="tipo">Tipo</string>
+    <string name="ppd" translatable="false">PPD</string>
+    <string name="dias_alquiler">Dias de alquiler:  %1$s dias</string>
+    <string name="coche">Coche</string>
+    <string name="moto">Moto</string>
+    <string name="patinete">Patinete</string>
+    <string name="realizar_pedido">Realizar Pedido</string>
+    <string name="cambiar_datos">Cambiar datos</string>
+    <string name="pagar">Pagar</string>
+    <string name="volver_al_inicio">Volver al inicio</string>
+    <string name="resumen_pedido">Resumen pedido</string>
+    <string name="dias">Dias</string>
+    <string name="diesel" translatable="false">Diesel</string>
+    <string name="gasolina">Gasolina</string>
+    <string name="electrico">Eléctrico</string>
+    <string name="con_gps">Con GPS</string>
+    <string name="sin_gps">Sin GPS</string>
+    <string name="_250" translatable="false">250</string>
+    <string name="_125" translatable="false">125</string>
+    <string name="_50" translatable="false">50</string>
+    <string name="tipo_de_coche">Tipo de coche</string>
+    <string name="potencia_de_la_moto">Potencia de la moto</string>
+    <string name="formulario_de_pago">Formulario de pago</string>
+    <string name="tipo_de_tarjeta">Tipo de tarjeta</string>
+    <string name="numero_de_tarjeta">Numero de tarjeta</string>
+    <string name="cvc" translatable="false">cvc</string>
+    <string name="caducidad">Caducidad</string>
+    <string name="confirmar_pago">Confirmar pago</string>
+    <string name="resumen_de_pago">Resumen de pago</string>
+    <string name="resumen_de_pedido">Resumen de pedido</string>
+    <string name="cambiar_datos_tarjeta">Cambiar datos tarjeta</string>
 </resources>

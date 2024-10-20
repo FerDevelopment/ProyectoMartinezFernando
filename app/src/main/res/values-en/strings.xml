@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="foto_de_perfil">Profile photo</string>
+    <string name="lista_pedidos">Shipping list</string>
+    <string name="hacer_pedido">Take vehicle</string>
+    <string name="tipo_de_vehiculo">Vehicle type</string>
+    <string name="nombre">Name</string>
+    <string name="apellidos">Surname</string>
+    <string name="tel_fono">Phone</string>
+    <string name="usuario">user</string>
+    <string name="correo">Email</string>
+    <string name="total_pedido">To pay: %1$s €</string>
+    <string name="tipo">Type</string>
+    <string name="dias_alquiler">Rent days:  %1$s days</string>
+    <string name="coche">Car</string>
+    <string name="moto">Bike</string>
+    <string name="patinete">Scooter</string>
+    <string name="realizar_pedido">Make Shipping</string>
+    <string name="cambiar_datos">Change data</string>
+    <string name="pagar">Pay</string>
+    <string name="volver_al_inicio">Back to home</string>
+    <string name="resumen_pedido">Order summary</string>
+    <string name="dias">Days</string>
+    <string name="gasolina">Gasoline</string>
+    <string name="electrico">Electric</string>
+    <string name="con_gps">With gps</string>
+    <string name="sin_gps">Without gps</string>
+    <string name="tipo_de_coche">" Car Type"</string>
+    <string name="potencia_de_la_moto">Bike Potency</string>
+    <string name="formulario_de_pago">Payment form</string>
+    <string name="tipo_de_tarjeta">Card type</string>
+    <string name="numero_de_tarjeta">Card number</string>
+    <string name="caducidad">Expiration</string>
+    <string name="confirmar_pago">Confirm payment</string>
+    <string name="resumen_de_pago">Payment resume</string>
+    <string name="resumen_de_pedido">Shipment summary</string>
+    <string name="cambiar_datos_tarjeta">Change card data</string>
+</resources>
