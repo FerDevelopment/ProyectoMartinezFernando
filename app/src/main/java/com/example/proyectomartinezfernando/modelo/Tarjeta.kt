@@ -1,6 +1,6 @@
-package com.example.proyectomartinezfernando.data
+package com.example.proyectomartinezfernando.modelo
 
-data class Tarjeta(
+ class Tarjeta(
     val tipo: String = "",
     val numero: String = "",
     val cvc: String = "",

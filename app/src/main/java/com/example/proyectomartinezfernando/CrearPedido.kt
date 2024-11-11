@@ -32,269 +32,278 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.proyectomartinezfernando.clases.Coche
-import com.example.proyectomartinezfernando.clases.Moto
-import com.example.proyectomartinezfernando.clases.Patin
-import com.example.proyectomartinezfernando.clases.Pedido
-import com.example.proyectomartinezfernando.clases.User
-import com.example.proyectomartinezfernando.clases.Vehiculo
+import com.example.proyectomartinezfernando.modelo.Coche
+import com.example.proyectomartinezfernando.modelo.Moto
+import com.example.proyectomartinezfernando.modelo.Patin
+import com.example.proyectomartinezfernando.modelo.Pedido
+import com.example.proyectomartinezfernando.modelo.User
+import com.example.proyectomartinezfernando.modelo.Vehiculo
 
 @Composable
-fun CrearPedido(modifier: Modifier, navController: NavHostController, user: User = User()) {
-   user.pedidos.add(Pedido(user))
-   Column(
-      modifier = modifier
-         .verticalScroll(rememberScrollState())
-         .padding(20.dp)
-         .fillMaxHeight(), horizontalAlignment = Alignment.Start,
-      verticalArrangement = Arrangement.SpaceEvenly
-   ) {
-      Text(
-         stringResource(R.string.realizar_pedido),
-         fontSize = 4.em,
-         fontWeight = FontWeight.Bold,
-      )
-      FormularioPedido(user, modifier)
-      Spacer(modifier = modifier.height(10.dp))
-      Botones(navController)
-   }
+fun CrearPedido(modifier : Modifier , navController : NavHostController , user : User = User()) {
+    user.pedidos.add(Pedido(user))
+    Column(
+        modifier = modifier
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp)
+                .fillMaxHeight() , horizontalAlignment = Alignment.Start ,
+        verticalArrangement = Arrangement.SpaceEvenly
+          ) {
+        Text(
+            stringResource(R.string.realizar_pedido) ,
+            fontSize = 4.em ,
+            fontWeight = FontWeight.Bold ,
+            )
+        //TODO() sacar el formulario para el viewModel
+        FormularioPedido(user , modifier)
+
+        Spacer(modifier = modifier.height(10.dp))
+        //TODO() Hacer esto con todos los botones
+        Botones(botonAtras = {
+            navController.navigate("pantalla_inicial")
+        } , botonAdelante = {
+            navController.navigate("resumen_pedido")
+        })
+    }
 
 }
 
 @Composable
 private fun FormularioPedido(
-   user: User = User(),
-   modifier: Modifier
-) {
-   user.pedidos.last().vehiculo = elegirVehiculo(modifier.fillMaxWidth())
-   HorizontalDivider()
-   user.pedidos.last().dias = campoDias(modifier)
-   HorizontalDivider()
-   Row {
-      Text("Total de pedido: ${user.pedidos.last().totalPagar}")
-   }
+        user : User = User() ,
+        modifier : Modifier
+                            ) {
+    user.pedidos.last().vehiculo = elegirVehiculo(modifier.fillMaxWidth())
+    HorizontalDivider()
+    user.pedidos.last().dias = campoDias(modifier)
+    HorizontalDivider()
+    Row {
+        Text(stringResource(R.string.total_de_pedido , user.pedidos.last().totalPagar))
+    }
 
 }
 
 @Composable
-private fun elegirVehiculo(modifier: Modifier): Vehiculo {
-   val listVehiculo = listOf(
-      R.string.coche,
-      R.string.moto,
-      R.string.patinete
-   )
-   var gps = false
-   var vehiAux = Vehiculo()
-   val (vehiculoElegido, onVehiculoElegido) = remember { mutableIntStateOf(listVehiculo[0]) }
-   var vehiculoElegido1 = vehiculoElegido
-   Column {
-      Row {
-         Column {
-            listVehiculo.forEach { opcion ->
-               Row(
-                  modifier = Modifier.selectable(
-                     selected = (opcion == vehiculoElegido),
-                     onClick = {
-                        vehiculoElegido1 = opcion
-                        onVehiculoElegido(opcion)
-                     }
-                  ),
-                  verticalAlignment = Alignment.CenterVertically
+private fun elegirVehiculo(modifier : Modifier) : Vehiculo {
+    val listVehiculo = listOf(
+        R.string.coche ,
+        R.string.moto ,
+        R.string.patinete
+                             )
+    var gps = false
+    var vehiAux = Vehiculo()
+    val (vehiculoElegido , onVehiculoElegido) = remember { mutableIntStateOf(listVehiculo[0]) }
+    var vehiculoElegido1 = vehiculoElegido
+    Column {
+        Row {
+            Column {
+                listVehiculo.forEach { opcion ->
+                    Row(
+                        modifier = Modifier.selectable(
+                            selected = (opcion == vehiculoElegido) ,
+                            onClick = {
+                                vehiculoElegido1 = opcion
+                                onVehiculoElegido(opcion)
+                            }
+                                                      ) ,
+                        verticalAlignment = Alignment.CenterVertically
+                       ) {
+                        RadioButton(selected = (opcion == vehiculoElegido1) ,
+                            onClick = {
+                                vehiculoElegido1 = opcion
+                                onVehiculoElegido(opcion)
+                            })
+                        Text(text = stringResource(opcion))
+                    }
+                }
+            }
+            Column(verticalArrangement = Arrangement.Top) {
+                gps = gps()
+            }
+        }
+        Row {
+            Column {
+                HorizontalDivider()
+                vehiAux = when (listVehiculo.indexOf(vehiculoElegido)) {
+                    0 -> formularioCoche()
+                    1 -> formularioMoto()
+                    2 -> formularioPatinete()
+                    else -> {
+                        Vehiculo()
+                    }
+                }
+            }
+        }
+    }
+
+    vehiAux.gps = gps
+    return vehiAux
+
+}
+
+@Composable
+fun formularioPatinete() : Vehiculo {
+    val type = "unic"
+    HorizontalDivider()
+    return Patin(type)
+}
+
+@Composable
+fun formularioMoto() : Vehiculo {
+    val type : String = tipoMoto()
+    HorizontalDivider()
+
+    return Moto(type)
+}
+
+@Composable
+fun tipoMoto() : String {
+    val tiposMotos = listOf(R.string._250 , R.string._125 , R.string._50)
+    val (tipoMoto , onEleccion) = remember { mutableIntStateOf(tiposMotos[0]) }
+
+    Column {
+        Text(
+            stringResource(R.string.potencia_de_la_moto) ,
+            fontWeight = FontWeight.Bold ,
+            fontSize = 3.em
+            )
+        tiposMotos.forEach { tipo ->
+            Row(
+                modifier = Modifier.selectable(
+                    selected = (tipo == tipoMoto) ,
+                    onClick = {
+                        onEleccion(tipo)
+                    }
+                                              ) ,
+                verticalAlignment = Alignment.CenterVertically
                ) {
-                  RadioButton(selected = (opcion == vehiculoElegido1),
-                     onClick = {
-                        vehiculoElegido1 = opcion
-                        onVehiculoElegido(opcion)
-                     })
-                  Text(text = stringResource(opcion))
-               }
+                RadioButton(
+                    selected = (tipo == tipoMoto) ,
+                    onClick = {
+                        onEleccion(tipo)
+                    } // Se maneja el clic en el Row
+                           )
+                Text(text = stringResource(tipo) + " cc")
             }
-         }
-         Column(verticalArrangement = Arrangement.Top) {
-            gps = gps()
-         }
-      }
-      Row {
-         Column {
-            HorizontalDivider()
-            vehiAux = when (listVehiculo.indexOf(vehiculoElegido)) {
-               0 -> formularioCoche()
-               1 -> formularioMoto()
-               2 -> formularioPatinete()
-               else -> {
-                  Vehiculo()
-               }
+        }
+    }
+    return when (tipoMoto) {
+        0 -> "250"
+        1 -> "125"
+        2 -> "50"
+        else -> "0"
+    }
+
+}
+
+@Composable
+fun formularioCoche() : Vehiculo {
+    val type : String = tipoCoche()
+    HorizontalDivider()
+    return Coche(type)
+}
+
+@Composable
+fun tipoCoche() : String {
+    val tiposCoche = listOf(R.string.diesel , R.string.gasolina , R.string.electrico)
+    val (tipoCoche , onEleccion) = remember { mutableIntStateOf(tiposCoche[0]) }
+
+    Column {
+        Text(
+            stringResource(R.string.tipo_de_coche) ,
+            fontWeight = FontWeight.Bold ,
+            fontSize = 3.em
+            )
+        tiposCoche.forEach { tipo ->
+            Row(
+                modifier = Modifier.selectable(
+                    selected = (tipo == tipoCoche) ,
+                    onClick = {
+                        onEleccion(tipo)
+                    }
+                                              ) ,
+                verticalAlignment = Alignment.CenterVertically
+               ) {
+                RadioButton(
+                    selected = (tipo == tipoCoche) ,
+                    onClick = {
+                        onEleccion(tipo)
+                    } // Se maneja el clic en el Row
+                           )
+                Text(text = stringResource(tipo))
             }
-         }
-      }
-   }
-
-   vehiAux.gps = gps
-   return vehiAux
-
-}
-
-@Composable
-fun formularioPatinete(): Vehiculo {
-   val type = "unic"
-   HorizontalDivider()
-   return Patin(type)
-}
-
-@Composable
-fun formularioMoto(): Vehiculo {
-   val type: String = tipoMoto()
-   HorizontalDivider()
-
-   return Moto(type)
-}
-
-@Composable
-fun tipoMoto(): String {
-   val tiposMotos = listOf(R.string._250, R.string._125, R.string._50)
-   val (tipoMoto, onEleccion) = remember { mutableIntStateOf(tiposMotos[0]) }
-
-   Column {
-      Text(
-         stringResource(R.string.potencia_de_la_moto),
-         fontWeight = FontWeight.Bold,
-         fontSize = 3.em
-      )
-      tiposMotos.forEach { tipo ->
-         Row(
-            modifier = Modifier.selectable(
-               selected = (tipo == tipoMoto),
-               onClick = {
-                  onEleccion(tipo)
-               }
-            ),
-            verticalAlignment = Alignment.CenterVertically
-         ) {
-            RadioButton(
-               selected = (tipo == tipoMoto),
-               onClick = {
-                  onEleccion(tipo)
-               } // Se maneja el clic en el Row
-            )
-            Text(text = stringResource(tipo) + " cc")
-         }
-      }
-   }
-   return when (tipoMoto) {
-      0 -> "250"
-      1 -> "125"
-      2 -> "50"
-      else -> "0"
-   }
+        }
+    }
+    return when (tipoCoche) {
+        0 -> "die"
+        1 -> "gas"
+        2 -> "ele"
+        else -> "null"
+    }
 
 }
 
 @Composable
-fun formularioCoche(): Vehiculo {
-   val type: String = tipoCoche()
-   HorizontalDivider()
-   return Coche(type)
+fun gps() : Boolean {
+    var gps by remember { mutableStateOf(true) }
+    // Opción 1: True
+    Row(modifier = Modifier.selectable(selected = gps , onClick = {
+        gps = true
+    }) , verticalAlignment = Alignment.CenterVertically) {
+        RadioButton(
+            selected = gps ,
+            onClick = { gps = true }
+                   )
+        Text(stringResource(R.string.con_gps))
+    }
+    Row(modifier = Modifier.selectable(selected = gps , onClick = {
+        gps = false
+    }) , verticalAlignment = Alignment.CenterVertically) {
+        RadioButton(
+            selected = ! gps ,
+            onClick = { gps = false }
+                   )
+        Text(stringResource(R.string.sin_gps))
+    }
+
+    return gps
 }
 
 @Composable
-fun tipoCoche(): String {
-   val tiposCoche = listOf(R.string.diesel, R.string.gasolina, R.string.electrico)
-   val (tipoCoche, onEleccion) = remember { mutableIntStateOf(tiposCoche[0]) }
-
-   Column {
-      Text(stringResource(R.string.tipo_de_coche), fontWeight = FontWeight.Bold, fontSize = 3.em)
-      tiposCoche.forEach { tipo ->
-         Row(
-            modifier = Modifier.selectable(
-               selected = (tipo == tipoCoche),
-               onClick = {
-                  onEleccion(tipo)
-               }
-            ),
-            verticalAlignment = Alignment.CenterVertically
-         ) {
-            RadioButton(
-               selected = (tipo == tipoCoche),
-               onClick = {
-                  onEleccion(tipo)
-               } // Se maneja el clic en el Row
-            )
-            Text(text = stringResource(tipo))
-         }
-      }
-   }
-   return when (tipoCoche) {
-      0 -> "die"
-      1 -> "gas"
-      2 -> "ele"
-      else -> "null"
-   }
-
+fun campoDias(modifier : Modifier) : Int {
+    var dias by remember { mutableStateOf("") }
+    TextField(
+        value = dias ,
+        onValueChange = {
+            dias = it
+        } ,
+        singleLine = true ,
+        label = { Text(text = stringResource(R.string.dias)) } ,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,
+        modifier = modifier.padding(0.dp)
+             )
+    return dias.toIntOrNull() ?: 0
 }
 
 @Composable
-fun gps(): Boolean {
-   var gps by remember { mutableStateOf(true) }
-   // Opción 1: True
-   Row(modifier = Modifier.selectable(selected = gps, onClick = {
-      gps = true
-   }), verticalAlignment = Alignment.CenterVertically) {
-      RadioButton(
-         selected = gps,
-         onClick = { gps = true }
-      )
-      Text(stringResource(R.string.con_gps))
-   }
-   Row(modifier = Modifier.selectable(selected = gps, onClick = {
-      gps = false
-   }), verticalAlignment = Alignment.CenterVertically) {
-      RadioButton(
-         selected = !gps,
-         onClick = { gps = false }
-      )
-      Text(stringResource(R.string.sin_gps))
-   }
+private fun Botones(botonAtras : () -> Unit , botonAdelante : () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth() ,
+        horizontalArrangement = Arrangement.SpaceAround ,
+        verticalAlignment = Alignment.Bottom
+       ) {
+        Button(
+            onClick =
+            botonAtras
+              ) {
+            Text(stringResource(R.string.volver_al_inicio))
+        }
 
-   return gps
-}
-
-@Composable
-fun campoDias(modifier: Modifier): Int {
-   var dias by remember { mutableStateOf("") }
-   TextField(
-      value = dias,
-      onValueChange = {
-         dias = it
-      },
-      singleLine = true,
-      label = { Text(text = stringResource(R.string.dias)) },
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-      modifier = modifier.padding(0.dp)
-   )
-   return dias.toIntOrNull() ?: 0
-}
-
-@Composable
-private fun Botones(navController: NavController) {
-   Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceAround,
-      verticalAlignment = Alignment.Bottom
-   ) {
-      Button(onClick =
-      {
-         navController.navigate("pantalla_inicial")
-      }
-      ) {
-         Text(stringResource(R.string.volver_al_inicio))
-      }
-
-      Button(onClick =
-      {
-         navController.navigate("resumen_pedido") {
-         }
-      }) {
-         Text(stringResource(R.string.resumen_pedido))
-      }
-   }
+        Button(
+            onClick = botonAdelante
+              )
+        {
+            Text(stringResource(R.string.resumen_pedido))
+        }
+    }
 }

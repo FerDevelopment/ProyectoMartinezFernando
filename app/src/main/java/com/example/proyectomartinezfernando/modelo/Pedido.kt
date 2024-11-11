@@ -1,4 +1,4 @@
-package com.example.proyectomartinezfernando.clases
+package com.example.proyectomartinezfernando.modelo
 
 class Pedido(
 

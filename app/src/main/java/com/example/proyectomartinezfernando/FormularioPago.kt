@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.proyectomartinezfernando.data.Tarjeta
+import com.example.proyectomartinezfernando.modelo.Tarjeta
 
 @Composable
 fun FormularioPago(modifier: Modifier, navController: NavHostController) {

@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.example.proyectomartinezfernando.clases.Pedido
-import com.example.proyectomartinezfernando.clases.User
-import com.example.proyectomartinezfernando.clases.Vehiculo
-import com.example.proyectomartinezfernando.data.Tarjeta
+import com.example.proyectomartinezfernando.modelo.Pedido
+import com.example.proyectomartinezfernando.modelo.User
+import com.example.proyectomartinezfernando.modelo.Vehiculo
+import com.example.proyectomartinezfernando.modelo.Tarjeta
 
 private val textTmTarjResum = 2.8.em
 

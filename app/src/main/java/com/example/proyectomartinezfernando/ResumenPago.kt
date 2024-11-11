@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.proyectomartinezfernando.data.Tarjeta
+import com.example.proyectomartinezfernando.modelo.Tarjeta
 
 @Composable
 fun ResumenPago(modifier: Modifier, navController: NavHostController) {

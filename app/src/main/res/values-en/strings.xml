@@ -35,4 +35,5 @@
     <string name="resumen_de_pago">Payment resume</string>
     <string name="resumen_de_pedido">Shipment summary</string>
     <string name="cambiar_datos_tarjeta">Change card data</string>
+    <string name="total_de_pedido">Final price: %1$s</string>
 </resources>
