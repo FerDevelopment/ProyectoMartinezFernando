@@ -4,56 +4,121 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.proyectomartinezfernando.ui.theme.ProyectoMartinezFernandoTheme
 
 class MainActivity : ComponentActivity() {
-   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      enableEdgeToEdge()
-      setContent {
-         ProyectoMartinezFernandoTheme {
-            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-               Prueba(modifier = Modifier.padding(innerPadding))
+    override fun onCreate(savedInstanceState : Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            ProyectoMartinezFernandoTheme {
+                MyApp()
             }
-         }
-      }
-   }
+        }
+    }
 
-   @Composable
-   fun Prueba(modifier: Modifier = Modifier) {
-      MyApp(modifier)
-   }
+    enum class Pantallas(@StringRes val titulo : Int) {
+        Inicio(titulo = R.string.usuario) ,
+        CrearPedido(titulo = R.string.hacer_pedido) ,
+        FormularioPago(titulo = R.string.formulario_de_pago) ,
+        ListaPedidos(titulo = R.string.lista_pedidos) ,
+        ResumenPedido(titulo = R.string.resumen_pedido) ,
+        ResumenPago(titulo = R.string.resumen_de_pago)
 
-   @Composable
-   fun MyApp(modifier: Modifier) {
-      // Creamos el NavController
-      val navController = rememberNavController()
-      // Creamos el NavHost que define todas las pantallas/rutas de la app
-      NavHost(
-         navController = navController,
-         startDestination = "pantalla_inicial"
-      ) {
-         composable("pantalla_inicial") {
-            PantallaInicial(
-               modifier = modifier,
-               navController = navController
-            )
-         }
-         composable("crear_pedido") { CrearPedido(modifier, navController) }
-         composable("formulario_pago") { FormularioPago(modifier, navController) }
-         composable("lista_pedidos") { ListaPedidos(modifier, navController) }
-         composable("resumen_pedido") { ResumenPedido(modifier, navController) }
-         composable("resumen_pago") { ResumenPago(modifier, navController) }
-      }
-   }
+    }
+
+    @Composable
+    fun Prueba(modifier : Modifier = Modifier) {
+
+    }
+
+    private @Composable
+    fun AppTopBar(pantallaActual : Any , puedeNavegarAtras : Boolean , onNavegarAtras : Any) {
+
+    }
+
+    @Composable
+    fun MyApp(modifier : Modifier = Modifier) {
+        val navController = rememberNavController()
+        val pilaRetroceso by navController.currentBackStackEntryAsState()
+        val pantallaActual = Pantallas.valueOf(
+            pilaRetroceso?.destination?.route ?: Pantallas.Inicio.name
+                                              )
+        // Creamos el NavController
+        // Creamos el NavHost que define todas las pantallas/rutas de la app
+        Scaffold(topBar = {
+            AppTopBar(
+                pantallaActual = pantallaActual ,
+                puedeNavegarAtras = navController.previousBackStackEntry != null ,
+                onNavegarAtras = { navController.navigateUp() }
+                     )
+        }) { innerPadding ->
+            NavHost(
+                navController = navController ,
+                startDestination = Pantallas.Inicio.name ,
+                modifier = modifier.padding(innerPadding)
+                   ) {
+                composable(Pantallas.Inicio.name) {
+                    PantallaInicial(
+                        modifier = modifier ,
+                        onAbrirListaPedido = { navController.navigate(Pantallas.ListaPedidos.name) } ,
+                        onCrearPedido = { navController.navigate(Pantallas.CrearPedido.name) }
+                                   )
+                }
+                composable(Pantallas.CrearPedido.name) {
+                    CrearPedido(
+                        modifier = modifier ,
+                        onVolverInicio = {
+                            navController.navigate(
+                                Pantallas.Inicio.name
+                                                  )
+                        } ,
+                        onIrResumenPedido = {
+                            navController.navigate(Pantallas.ResumenPedido.name)
+                        }
+                               )
+                }
+                composable(Pantallas.FormularioPago.name) {
+                    FormularioPago(modifier , onVolverResumenPedido = {
+                        navController.navigate(Pantallas.ResumenPedido.name)
+                    } ,
+                        onIrResumenPago =
+                        {
+                            navController.navigate(Pantallas.ResumenPago.name)
+                        }
+                                  )
+                }
+                composable(Pantallas.ListaPedidos.name) {
+                    ListaPedidos(
+                        modifier ,
+                        onVolverInicio = { navController.navigate(Pantallas.Inicio.name) })
+                }
+                composable(Pantallas.ResumenPedido.name) {
+                    ResumenPedido(
+                        modifier ,
+                        onCrearPedido = { navController.navigate(Pantallas.CrearPedido.name) } ,
+                        onIrFomularioPago = { navController.navigate(Pantallas.FormularioPago.name) })
+                }
+                composable(Pantallas.ResumenPago.name) {
+                    ResumenPago(
+                        modifier = modifier ,
+                        onVolverFormularioPago = { navController.navigate(Pantallas.FormularioPago.name) } ,
+                        onPagar = { navController.navigate(Pantallas.Inicio.name) })
+                }
+            }
+        }
+    }
 
 }
 

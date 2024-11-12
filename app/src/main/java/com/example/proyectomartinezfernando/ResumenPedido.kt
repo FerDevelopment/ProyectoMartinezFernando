@@ -17,40 +17,38 @@ import androidx.navigation.NavHostController
 import com.example.proyectomartinezfernando.modelo.Pedido
 
 @Composable
-fun ResumenPedido(modifier: Modifier, navController: NavHostController, pedido: Pedido = Pedido()) {
-   Column(
-      modifier
-         .padding(15.dp)
-         .fillMaxHeight(),
-      verticalArrangement = Arrangement.SpaceBetween
-   ) {
-      FuncionesComunes().ImprimirCardPedido(pedido)
-      Botones(navController)
-   }
+fun ResumenPedido(
+        modifier : Modifier ,
+        onCrearPedido : () -> Unit , onIrFomularioPago : () -> Unit ,
+        pedido : Pedido = Pedido()
+                 ) {
+    Column(
+        modifier
+                .padding(15.dp)
+                .fillMaxHeight() ,
+        verticalArrangement = Arrangement.SpaceBetween
+          ) {
+        FuncionesComunes().ImprimirCardPedido(pedido)
+        Botones(onCrearPedido , onIrFomularioPago)
+    }
 
 }
 
 @Composable
-private fun Botones(navController: NavController) {
-   Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceAround
-   ) {
-      /*Boton 1 -->  Listar Pedidos*/
-      Button(onClick =
-      {
-         navController.navigate("crear_pedido")
-      }
-      ) {
-         Text(stringResource(R.string.cambiar_datos))
-      }
-      /*Boton2 --> Realizar Pedido*/
+private fun Botones(onCrearPedido : () -> Unit , onIrFomularioPago : () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth() ,
+        horizontalArrangement = Arrangement.SpaceAround
+       ) {
+        Button(
+            onClick = onCrearPedido
+              ) {
+            Text(stringResource(R.string.cambiar_datos))
+        }
 
-      Button(onClick =
-      {
-         navController.navigate("formulario_pago")
-      }) {
-         Text(stringResource(R.string.pagar))
-      }
-   }
+
+        Button(onClick = onIrFomularioPago) {
+            Text(stringResource(R.string.pagar))
+        }
+    }
 }

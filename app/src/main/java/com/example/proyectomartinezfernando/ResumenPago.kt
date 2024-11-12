@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
@@ -18,48 +19,46 @@ import androidx.navigation.NavHostController
 import com.example.proyectomartinezfernando.modelo.Tarjeta
 
 @Composable
-fun ResumenPago(modifier: Modifier, navController: NavHostController) {
-   val tarjeta = Tarjeta()
-   Spacer(modifier = modifier.height(16.dp))
-   Column {
-      FuncionesComunes().CardTarjeta(modifier, tarjeta)
-      Spacer(modifier = Modifier.height(16.dp))
-      Botones(navController)
-   }
+fun ResumenPago(modifier : Modifier , onVolverFormularioPago : () -> Unit , onPagar : () -> Unit) {
+    val tarjeta = Tarjeta()
+    Spacer(modifier = modifier.height(16.dp))
+    Column {
+        FuncionesComunes().CardTarjeta(modifier , tarjeta)
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxSize() ,
+            horizontalArrangement = Arrangement.SpaceAround ,
+            verticalAlignment = Alignment.Bottom
+           ) {
+            Botones(onVolverFormularioPago , onPagar)
+        }
+    }
 
 }
 
 // Función para enmascarar el número de la tarjeta
-fun enmascararNumeroTarjeta(numero: String): String {
-   return if (numero.length >= 16) {
-      "**** **** **** " + numero.takeLast(4)
-   } else {
-      "****"
-   }
+fun enmascararNumeroTarjeta(numero : String) : String {
+    return if (numero.length >= 16) {
+        "**** **** **** " + numero.takeLast(4)
+    }
+    else {
+        "****"
+    }
 }
 
 // Función para enmascarar el CVC
-fun enmascararCVC(): String {
-   return "***"
+fun enmascararCVC() : String {
+    return "***"
 }
 
 @Composable
-private fun Botones(navController: NavController) {
-   Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceAround,
-      verticalAlignment = Alignment.Bottom
-   ) {
-      Button(onClick = {
-         navController.navigate("formulario_pago")
-      }) {
-         Text(stringResource(R.string.cambiar_datos_tarjeta))
-      }
+private fun Botones(onVolverFormularioPago : () -> Unit , onPagar : () -> Unit) {
+    Button(onClick = onVolverFormularioPago) {
+        Text(stringResource(R.string.cambiar_datos_tarjeta))
+    }
 
-      Button(onClick = {
-         navController.navigate("pantalla_inicial") {}
-      }) {
-         Text(stringResource(R.string.pagar))
-      }
-   }
+    Button(onClick = onPagar) {
+        Text(stringResource(R.string.pagar))
+    }
+
 }

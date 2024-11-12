@@ -22,72 +22,69 @@ import androidx.navigation.NavController
 import com.example.proyectomartinezfernando.modelo.User
 
 @Composable
-fun PantallaInicial(modifier: Modifier = Modifier,
-                    user: User = User(),
-                    navController: NavController
-) {
-   Column(
-      modifier = modifier
-         .padding(15.dp)
-         .fillMaxHeight(),
-      verticalArrangement = Arrangement.SpaceBetween
-   ) {
-      TarjetaUser(user)
-      Botones(navController)
-   }
+fun PantallaInicial(
+        modifier : Modifier = Modifier ,
+        user : User = User() ,
+        onAbrirListaPedido : () -> Unit ,
+        onCrearPedido : () -> Unit
+                   ) {
+    Column(
+        modifier = modifier
+                .padding(15.dp)
+                .fillMaxHeight() ,
+        verticalArrangement = Arrangement.SpaceBetween
+          ) {
+        TarjetaUser(user)
+        Botones(onAbrirListaPedido , onCrearPedido)
+    }
 }
 
 @Composable
-fun TarjetaUser(user: User) {
-   Card(
-      modifier = Modifier
-         .fillMaxWidth()
-   ) {
-      Column(modifier = Modifier.padding(10.dp)) {
-         Row(
-            modifier = Modifier
-               .padding(10.dp)
-               .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-         ) {
-            Image(
-               painter = painterResource(user.fotoPerfil),
-               contentDescription = stringResource(R.string.foto_de_perfil),
-               modifier = Modifier.size(120.dp),
-               contentScale = ContentScale.Fit
-            )
-         }
-         Row {
-            Column(horizontalAlignment = Alignment.Start) {
-               FuncionesComunes().SacarInfoUser(user)
+fun TarjetaUser(user : User) {
+    Card(
+        modifier = Modifier
+                .fillMaxWidth()
+        ) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Row(
+                modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth() ,
+                horizontalArrangement = Arrangement.Center
+               ) {
+                Image(
+                    painter = painterResource(user.fotoPerfil) ,
+                    contentDescription = stringResource(R.string.foto_de_perfil) ,
+                    modifier = Modifier.size(120.dp) ,
+                    contentScale = ContentScale.Fit
+                     )
             }
-         }
-      }
-   }
+            Row {
+                Column(horizontalAlignment = Alignment.Start) {
+                    FuncionesComunes().SacarInfoUser(user)
+                }
+            }
+        }
+    }
 
 }
 
 @Composable
-private fun Botones(navController: NavController) {
-   Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceAround
-   ) {
-      /*Boton 1 -->  Listar Pedidos*/
-      Button(onClick =
-      {
-         navController.navigate("lista_pedidos")
-      }
-      ) {
-         Text(stringResource(R.string.lista_pedidos))
-      }
-      /*Boton2 --> Realizar Pedido*/
+private fun Botones(botonAtras : () -> Unit , botonAdelante : () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth() ,
+        horizontalArrangement = Arrangement.SpaceAround
+       ) {
+        /*Boton 1 -->  Listar Pedidos*/
+        Button(
+            onClick = botonAtras
+              ) {
+            Text(stringResource(R.string.lista_pedidos))
+        }
+        /*Boton2 --> Realizar Pedido*/
 
-      Button(onClick =
-      {
-         navController.navigate("crear_pedido")
-      }) {
-         Text(stringResource(R.string.hacer_pedido))
-      }
-   }
+        Button(onClick = botonAdelante) {
+            Text(stringResource(R.string.hacer_pedido))
+        }
+    }
 }

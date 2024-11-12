@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,14 +41,20 @@ import com.example.proyectomartinezfernando.modelo.User
 import com.example.proyectomartinezfernando.modelo.Vehiculo
 
 @Composable
-fun CrearPedido(modifier : Modifier , navController : NavHostController , user : User = User()) {
+fun CrearPedido(
+        modifier : Modifier ,
+        user : User = User() ,
+        onVolverInicio : () -> Unit ,
+        onIrResumenPedido : () -> Unit
+               ) {
     user.pedidos.add(Pedido(user))
     Column(
         modifier = modifier
-                .verticalScroll(rememberScrollState())
                 .padding(20.dp)
-                .fillMaxHeight() , horizontalAlignment = Alignment.Start ,
+                .fillMaxHeight() ,
+        horizontalAlignment = Alignment.Start ,
         verticalArrangement = Arrangement.SpaceEvenly
+
           ) {
         Text(
             stringResource(R.string.realizar_pedido) ,
@@ -57,13 +64,15 @@ fun CrearPedido(modifier : Modifier , navController : NavHostController , user :
         //TODO() sacar el formulario para el viewModel
         FormularioPedido(user , modifier)
 
-        Spacer(modifier = modifier.height(10.dp))
-        //TODO() Hacer esto con todos los botones
-        Botones(botonAtras = {
-            navController.navigate("pantalla_inicial")
-        } , botonAdelante = {
-            navController.navigate("resumen_pedido")
-        })
+
+
+        Row(
+            modifier = Modifier.fillMaxSize() ,
+            verticalAlignment = Alignment.Bottom ,
+            horizontalArrangement = Arrangement.SpaceAround
+           ) {
+            Botones(botonAtras = onVolverInicio , botonAdelante = onIrResumenPedido)
+        }
     }
 
 }
@@ -287,23 +296,18 @@ fun campoDias(modifier : Modifier) : Int {
 
 @Composable
 private fun Botones(botonAtras : () -> Unit , botonAdelante : () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth() ,
-        horizontalArrangement = Arrangement.SpaceAround ,
-        verticalAlignment = Alignment.Bottom
-       ) {
-        Button(
-            onClick =
-            botonAtras
-              ) {
-            Text(stringResource(R.string.volver_al_inicio))
-        }
-
-        Button(
-            onClick = botonAdelante
-              )
-        {
-            Text(stringResource(R.string.resumen_pedido))
-        }
+    Button(
+        onClick =
+        botonAtras
+          ) {
+        Text(stringResource(R.string.volver_al_inicio))
     }
+
+    Button(
+        onClick = botonAdelante
+          )
+    {
+        Text(stringResource(R.string.resumen_pedido))
+    }
+
 }

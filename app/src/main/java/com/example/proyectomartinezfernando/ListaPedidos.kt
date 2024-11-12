@@ -11,20 +11,20 @@ import androidx.navigation.NavHostController
 import com.example.proyectomartinezfernando.datos.CargarDatos
 
 @Composable
-fun ListaPedidos(modifier: Modifier = Modifier, navHostController: NavHostController) {
-   Column(modifier = modifier) {
-      Text("Pedidos", fontSize = 7.em)
-      PedidosOut()
-   }
+fun ListaPedidos(modifier : Modifier = Modifier , onVolverInicio : () -> Unit) {
+    Column(modifier = modifier) {
+        Text("Pedidos" , fontSize = 7.em)
+        PedidosOut()
+    }
 }
 
 @Composable
 fun PedidosOut() {
-   LazyColumn {
-      items(CargarDatos().cargarLista()) { pedido ->
-         FuncionesComunes().ImprimirCardPedido(pedido)
-      }
-   }
+    LazyColumn {
+        items(CargarDatos().cargarLista()) { pedido ->
+            FuncionesComunes().ImprimirCardPedido(pedido)
+        }
+    }
 }
 
 
