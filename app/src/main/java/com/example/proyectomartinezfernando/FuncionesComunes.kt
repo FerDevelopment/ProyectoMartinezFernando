@@ -121,7 +121,7 @@ class FuncionesComunes {
    }
 
    @Composable
-   fun CardTarjeta(modifier: Modifier,
+   fun CardTarjeta(modifier: Modifier = Modifier,
                    tarjeta: Tarjeta
    ) {
       Card(modifier = modifier) {
@@ -168,6 +168,20 @@ class FuncionesComunes {
             }
          }
       }
+   }
+
+   // Función para enmascarar el número de la tarjeta
+   private fun enmascararNumeroTarjeta(numero: String): String {
+      return if (numero.length >= 16) {
+         "**** **** **** " + numero.takeLast(4)
+      } else {
+         "****"
+      }
+   }
+
+   // Función para enmascarar el CVC
+   private fun enmascararCVC(): String {
+      return "***"
    }
 
 }

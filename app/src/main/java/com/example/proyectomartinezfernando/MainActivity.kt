@@ -43,8 +43,8 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    private @Composable
-    fun AppTopBar(pantallaActual : Any , puedeNavegarAtras : Boolean , onNavegarAtras : Any) {
+    @Composable
+    private fun AppTopBar(pantallaActual : Any , puedeNavegarAtras : Boolean , onNavegarAtras : Any) {
 
     }
 
