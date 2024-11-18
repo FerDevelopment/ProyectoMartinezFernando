@@ -20,7 +20,8 @@ import com.example.proyectomartinezfernando.modelo.Pedido
 @Composable
 fun ResumenPedido(
         modifier : Modifier ,
-        onCrearPedido : () -> Unit , onIrFomularioPago : () -> Unit ,
+        onVolverCrearPedido : () -> Unit ,
+        onIrFomularioPago : () -> Unit ,
         pedido : Pedido = Pedido()
                  ) {
     Column(
@@ -30,7 +31,7 @@ fun ResumenPedido(
         verticalArrangement = Arrangement.SpaceBetween
           ) {
         FuncionesComunes().ImprimirCardPedido(pedido)
-        Botones(onCrearPedido , onIrFomularioPago)
+        Botones(onVolverCrearPedido , onIrFomularioPago)
     }
 
 }
@@ -48,7 +49,7 @@ private fun Botones(onCrearPedido : () -> Unit , onIrFomularioPago : () -> Unit)
         }
 
 
-        Button(modifier = Modifier.width(125.dp),onClick = onIrFomularioPago) {
+        Button(modifier = Modifier.width(125.dp) , onClick = onIrFomularioPago) {
             Text(stringResource(R.string.pagar))
         }
     }

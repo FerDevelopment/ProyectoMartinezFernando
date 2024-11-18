@@ -31,13 +31,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import com.example.proyectomartinezfernando.data.Pedido
+import com.example.proyectomartinezfernando.data.User
 import com.example.proyectomartinezfernando.modelo.Coche
 import com.example.proyectomartinezfernando.modelo.Moto
 import com.example.proyectomartinezfernando.modelo.Patin
-import com.example.proyectomartinezfernando.modelo.Pedido
-import com.example.proyectomartinezfernando.modelo.User
 import com.example.proyectomartinezfernando.modelo.Vehiculo
 
 @Composable
@@ -47,14 +45,13 @@ fun CrearPedido(
         onVolverInicio : () -> Unit ,
         onIrResumenPedido : () -> Unit
                ) {
-    user.pedidos.add(Pedido(user))
+    user.pedidos.add(Pedido())
     Column(
         modifier = modifier
                 .padding(20.dp)
                 .fillMaxHeight() ,
         horizontalAlignment = Alignment.Start ,
         verticalArrangement = Arrangement.SpaceEvenly
-
           ) {
         Text(
             stringResource(R.string.realizar_pedido) ,
@@ -79,12 +76,16 @@ fun CrearPedido(
 
 @Composable
 private fun FormularioPedido(
+        onElegirDiasAlquiler : (String) -> Unit ,
+        pedido : Pedido = Pedido() ,
         user : User = User() ,
         modifier : Modifier
                             ) {
     user.pedidos.last().vehiculo = elegirVehiculo(modifier.fillMaxWidth())
     HorizontalDivider()
-    user.pedidos.last().dias = campoDias(modifier)
+
+    CampoDias(modifier = modifier , onElegirDiasAlquiler)
+    user.pedidos.last().dias.campoDias(modifier)
     HorizontalDivider()
     Row {
         Text(stringResource(R.string.total_de_pedido , user.pedidos.last().totalPagar))
@@ -279,19 +280,20 @@ fun gps() : Boolean {
 }
 
 @Composable
-fun campoDias(modifier : Modifier) : Int {
+fun CampoDias(modifier : Modifier , onElegirDiasAlquiler : (String) -> Unit) {
     var dias by remember { mutableStateOf("") }
     TextField(
         value = dias ,
         onValueChange = {
             dias = it
+            onElegirDiasAlquiler(it)
         } ,
         singleLine = true ,
         label = { Text(text = stringResource(R.string.dias)) } ,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,
         modifier = modifier.padding(0.dp)
              )
-    return dias.toIntOrNull() ?: 0
+
 }
 
 @Composable

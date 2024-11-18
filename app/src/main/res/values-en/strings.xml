@@ -7,7 +7,7 @@
     <string name="nombre">Name</string>
     <string name="apellidos">Surname</string>
     <string name="tel_fono">Phone</string>
-    <string name="usuario">user</string>
+    <string name="usuario">User</string>
     <string name="correo">Email</string>
     <string name="total_pedido">To pay: %1$s €</string>
     <string name="tipo">Type</string>
@@ -36,4 +36,6 @@
     <string name="resumen_de_pedido">Shipment summary</string>
     <string name="cambiar_datos_tarjeta">Change card data</string>
     <string name="total_de_pedido">Final price: %1$s</string>
+    <string name="ir_atras">Come back</string>
+    <string name="usuarioInfo">User Info</string>
 </resources>
