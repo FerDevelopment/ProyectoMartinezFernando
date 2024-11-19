@@ -3,19 +3,16 @@ package com.example.proyectomartinezfernando
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -31,8 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.example.proyectomartinezfernando.data.Pedido
-import com.example.proyectomartinezfernando.data.User
+import com.example.proyectomartinezfernando.datos.CargarDatos
 import com.example.proyectomartinezfernando.modelo.Coche
 import com.example.proyectomartinezfernando.modelo.Moto
 import com.example.proyectomartinezfernando.modelo.Patin
@@ -41,11 +37,14 @@ import com.example.proyectomartinezfernando.modelo.Vehiculo
 @Composable
 fun CrearPedido(
         modifier : Modifier ,
-        user : User = User() ,
         onVolverInicio : () -> Unit ,
-        onIrResumenPedido : () -> Unit
+        onIrResumenPedido : () -> Unit ,
+        onElegirDiasAlquiler : (String) -> Unit ,
+        onElegirVehiculo : (Vehiculo) -> Unit ,
+        onElegirGPS : (Boolean) -> Unit ,
+        precioFinal : Int ,
+        gps : Boolean
                ) {
-    user.pedidos.add(Pedido())
     Column(
         modifier = modifier
                 .padding(20.dp)
@@ -58,8 +57,11 @@ fun CrearPedido(
             fontSize = 4.em ,
             fontWeight = FontWeight.Bold ,
             )
-        //TODO() sacar el formulario para el viewModel
-        FormularioPedido(user , modifier)
+
+        FormularioPedido(
+            onElegirDiasAlquiler , onElegirVehiculo , precioFinal , modifier ,
+            onElegirGPS , gps
+                        )
 
 
 
@@ -77,31 +79,36 @@ fun CrearPedido(
 @Composable
 private fun FormularioPedido(
         onElegirDiasAlquiler : (String) -> Unit ,
-        pedido : Pedido = Pedido() ,
-        user : User = User() ,
-        modifier : Modifier
+        onElegirVehiculo : (Vehiculo) -> Unit ,
+        precioFinal : Int ,
+        modifier : Modifier ,
+        onElegirGPS : (Boolean) -> Unit ,
+        gps : Boolean
                             ) {
-    user.pedidos.last().vehiculo = elegirVehiculo(modifier.fillMaxWidth())
+    ElegirVehiculo(onElegirVehiculo = onElegirVehiculo , gps = gps , onElegirGPS = onElegirGPS)
     HorizontalDivider()
-
+    /*Campo dias completado*/
     CampoDias(modifier = modifier , onElegirDiasAlquiler)
-    user.pedidos.last().dias.campoDias(modifier)
+
     HorizontalDivider()
     Row {
-        Text(stringResource(R.string.total_de_pedido , user.pedidos.last().totalPagar))
+        Text(stringResource(R.string.total_de_pedido , precioFinal))
     }
 
 }
 
 @Composable
-private fun elegirVehiculo(modifier : Modifier) : Vehiculo {
+private fun ElegirVehiculo(
+        onElegirVehiculo : (Vehiculo) -> Unit , onElegirGPS : (Boolean) -> Unit ,
+        gps : Boolean
+                          ) {
     val listVehiculo = listOf(
         R.string.coche ,
         R.string.moto ,
         R.string.patinete
                              )
-    var gps = false
-    var vehiAux = Vehiculo()
+    var vehiAux by remember { mutableStateOf(Vehiculo()) }
+    onElegirVehiculo(vehiAux)
     val (vehiculoElegido , onVehiculoElegido) = remember { mutableIntStateOf(listVehiculo[0]) }
     var vehiculoElegido1 = vehiculoElegido
     Column {
@@ -127,17 +134,20 @@ private fun elegirVehiculo(modifier : Modifier) : Vehiculo {
                     }
                 }
             }
-            Column(verticalArrangement = Arrangement.Top) {
-                gps = gps()
+            Column(
+                verticalArrangement = Arrangement.SpaceAround ,
+                horizontalAlignment = Alignment.CenterHorizontally
+                  ) {
+                Gps(onElegirGPS = onElegirGPS)
             }
         }
         Row {
             Column {
                 HorizontalDivider()
                 vehiAux = when (listVehiculo.indexOf(vehiculoElegido)) {
-                    0 -> formularioCoche()
-                    1 -> formularioMoto()
-                    2 -> formularioPatinete()
+                    0 -> formularioCoche(gps)
+                    1 -> formularioMoto(gps)
+                    2 -> formularioPatinete(gps)
                     else -> {
                         Vehiculo()
                     }
@@ -146,30 +156,33 @@ private fun elegirVehiculo(modifier : Modifier) : Vehiculo {
         }
     }
 
-    vehiAux.gps = gps
-    return vehiAux
-
 }
 
 @Composable
-fun formularioPatinete() : Vehiculo {
+fun formularioPatinete(gps : Boolean) : Vehiculo {
     val type = "unic"
     HorizontalDivider()
-    return Patin(type)
+    return Patin(type = type , gps = gps)
 }
 
 @Composable
-fun formularioMoto() : Vehiculo {
+fun formularioMoto(gps : Boolean) : Vehiculo {
     val type : String = tipoMoto()
     HorizontalDivider()
 
-    return Moto(type)
+    return Moto(type = type , gps = gps)
 }
 
 @Composable
 fun tipoMoto() : String {
     val tiposMotos = listOf(R.string._250 , R.string._125 , R.string._50)
-    val (tipoMoto , onEleccion) = remember { mutableIntStateOf(tiposMotos[0]) }
+    val (tipoMoto , onEleccion) = remember {
+        mutableIntStateOf(
+            tiposMotos.indexOf(
+                tiposMotos[0]
+                              )
+                         )
+    }
 
     Column {
         Text(
@@ -197,20 +210,20 @@ fun tipoMoto() : String {
             }
         }
     }
-    return when (tipoMoto) {
-        0 -> "250"
-        1 -> "125"
-        2 -> "50"
+    return when (tiposMotos.indexOf(tipoMoto)) {
+        0 -> CargarDatos().MOTOSLISTATIPOS[0]
+        1 -> CargarDatos().MOTOSLISTATIPOS[1]
+        2 -> CargarDatos().MOTOSLISTATIPOS[2]
         else -> "0"
     }
 
 }
 
 @Composable
-fun formularioCoche() : Vehiculo {
+fun formularioCoche(gps : Boolean) : Vehiculo {
     val type : String = tipoCoche()
     HorizontalDivider()
-    return Coche(type)
+    return Coche(type = type , gps = gps)
 }
 
 @Composable
@@ -244,39 +257,34 @@ fun tipoCoche() : String {
             }
         }
     }
-    return when (tipoCoche) {
-        0 -> "die"
-        1 -> "gas"
-        2 -> "ele"
+    return when (tiposCoche.indexOf(tipoCoche)) {
+        0 -> CargarDatos().COCHELISTATIPOS[0]
+        1 -> CargarDatos().COCHELISTATIPOS[1]
+        2 -> CargarDatos().COCHELISTATIPOS[2]
         else -> "null"
     }
 
 }
 
 @Composable
-fun gps() : Boolean {
-    var gps by remember { mutableStateOf(true) }
+fun Gps(onElegirGPS : (Boolean) -> Unit) {
+    var gps by remember { mutableStateOf(false) }
     // Opción 1: True
-    Row(modifier = Modifier.selectable(selected = gps , onClick = {
-        gps = true
-    }) , verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(
-            selected = gps ,
-            onClick = { gps = true }
-                   )
-        Text(stringResource(R.string.con_gps))
-    }
-    Row(modifier = Modifier.selectable(selected = gps , onClick = {
-        gps = false
-    }) , verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(
-            selected = ! gps ,
-            onClick = { gps = false }
-                   )
-        Text(stringResource(R.string.sin_gps))
+    Row(
+        modifier = Modifier.fillMaxWidth() ,
+        horizontalArrangement = Arrangement.SpaceAround ,
+        verticalAlignment = Alignment.CenterVertically
+       ) {
+        Text(stringResource(R.string.gps))
+        Switch(
+            checked = gps ,
+            onCheckedChange = { estado ->
+                gps = estado
+                onElegirGPS(estado)
+            }
+              )
     }
 
-    return gps
 }
 
 @Composable

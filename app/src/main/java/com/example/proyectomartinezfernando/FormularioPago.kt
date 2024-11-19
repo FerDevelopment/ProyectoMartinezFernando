@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -26,13 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.example.proyectomartinezfernando.modelo.Tarjeta
+import com.example.proyectomartinezfernando.data.Tarjeta
 
 @Composable
 fun FormularioPago(
         modifier : Modifier ,
         onVolverResumenPedido : () -> Unit ,
-        onIrResumenPago : () -> Unit
+        onIrResumenPago : () -> Unit ,
+        onAgregarTarjeta : (Tarjeta) -> Unit
                   ) {
     val tiposTarjeta = listOf("VISA" , "MasterCard" , "Euro 6000")
     var tipoTarjeta by remember { mutableStateOf("") }
@@ -90,7 +90,7 @@ fun FormularioPago(
             modifier = modifier.fillMaxWidth() ,
             verticalAlignment = Alignment.CenterVertically ,
             horizontalArrangement = Arrangement.SpaceBetween ,
-            ) {
+           ) {
             // Caducidad
             TextField(
                 value = caducidad ,
@@ -98,7 +98,8 @@ fun FormularioPago(
                 label = { Text(stringResource(R.string.caducidad)) } ,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,
                 modifier = Modifier
-                        .padding(10.dp).weight(1f)
+                        .padding(10.dp)
+                        .weight(1f)
                      )
             // CVC
             TextField(
@@ -107,7 +108,8 @@ fun FormularioPago(
                 label = { Text(stringResource(R.string.cvc)) } ,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,
                 modifier = Modifier
-                        .padding(10.dp).weight(1f)
+                        .padding(10.dp)
+                        .weight(1f)
                      )
         }
         Row(
@@ -118,7 +120,7 @@ fun FormularioPago(
             Botones(onVolverResumenPedido , onIrResumenPago)
         }
     }
-    val tarjeta = Tarjeta(tipoTarjeta , numeroTarjeta , cvc , caducidad)
+    onAgregarTarjeta(Tarjeta(tipoTarjeta , numeroTarjeta , cvc , caducidad))
 
 }
 

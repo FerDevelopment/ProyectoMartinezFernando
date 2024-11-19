@@ -18,8 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.proyectomartinezfernando.modelo.User
+import com.example.proyectomartinezfernando.data.User
 
 @Composable
 fun PantallaInicial(

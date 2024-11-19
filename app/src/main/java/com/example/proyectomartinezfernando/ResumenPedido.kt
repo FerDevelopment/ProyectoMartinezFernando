@@ -13,16 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.example.proyectomartinezfernando.modelo.Pedido
+import com.example.proyectomartinezfernando.data.Pedido
 
 @Composable
 fun ResumenPedido(
         modifier : Modifier ,
         onVolverCrearPedido : () -> Unit ,
         onIrFomularioPago : () -> Unit ,
-        pedido : Pedido = Pedido()
+        pedido : Pedido
                  ) {
     Column(
         modifier

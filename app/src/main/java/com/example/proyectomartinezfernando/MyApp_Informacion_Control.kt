@@ -11,18 +11,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.proyectomartinezfernando.ui.viewmodel.PedidoViewModel
 
-enum class Pantallas(@StringRes val titulo : Int) {
+enum class Pantallas(
+        @StringRes
+        val titulo : Int
+                    ) {
     Inicio(titulo = R.string.usuarioInfo) ,
     CrearPedido(titulo = R.string.hacer_pedido) ,
     FormularioPago(titulo = R.string.formulario_de_pago) ,
@@ -62,7 +67,11 @@ private fun AppTopBar(
 }
 
 @Composable
-fun MyApp(modifier : Modifier = Modifier) {
+fun MyApp(
+        modifier : Modifier = Modifier ,
+        pedidoViewModel : PedidoViewModel = viewModel()
+         ) {
+    val pedidoUIState by pedidoViewModel.uiState.collectAsState()
     val navController = rememberNavController()
     val pilaRetroceso by navController.currentBackStackEntryAsState()
     val pantallaActual = Pantallas.valueOf(
@@ -98,6 +107,13 @@ fun MyApp(modifier : Modifier = Modifier) {
                     onVolverInicio = volverAtras ,
                     onIrResumenPedido = {
                         navController.navigate(Pantallas.ResumenPedido.name)
+                    } ,
+                    onElegirDiasAlquiler = { pedidoViewModel.actualizarDias(it) } ,
+                    onElegirVehiculo = { pedidoViewModel.actualizarVehiculo(it) } ,
+                    precioFinal = pedidoUIState.totalPagar ,
+                    gps = pedidoUIState.gps ,
+                    onElegirGPS = {
+                        pedidoViewModel.actualizarGPS(it)
                     }
                            )
             }
@@ -106,7 +122,8 @@ fun MyApp(modifier : Modifier = Modifier) {
                     onIrResumenPago =
                     {
                         navController.navigate(Pantallas.ResumenPago.name)
-                    }
+                    } ,
+                    onAgregarTarjeta = { pedidoViewModel.actualizarTarjeta(it) }
                               )
             }
             composable(Pantallas.ListaPedidos.name) {
@@ -119,7 +136,8 @@ fun MyApp(modifier : Modifier = Modifier) {
                 ResumenPedido(
                     modifier ,
                     onVolverCrearPedido = volverAtras ,
-                    onIrFomularioPago = { navController.navigate(Pantallas.FormularioPago.name) })
+                    onIrFomularioPago = { navController.navigate(Pantallas.FormularioPago.name) } ,
+                    pedido = pedidoUIState)
             }
             composable(Pantallas.ResumenPago.name) {
                 ResumenPago(
@@ -130,7 +148,8 @@ fun MyApp(modifier : Modifier = Modifier) {
                             Pantallas.Inicio.name ,
                             inclusive = false
                                                   )
-                    }
+                    } ,
+                    tarjeta = pedidoUIState.tarjeta
                            )
             }
         }

@@ -4,8 +4,8 @@ import androidx.annotation.DrawableRes
 import com.example.proyectomartinezfernando.R
 
 open class Vehiculo() {
-    val precioDia : Int = 0
-    val gps : Boolean = false
+    var precioDia : Int = 1
+    var gps : Boolean = false
     val type : String = ""
 
     @DrawableRes
@@ -16,13 +16,15 @@ open class Vehiculo() {
         }
         else {
             "sin gps"
-        } ,
-        type ,
-        "$precioDia"
+        } , type , "$precioDia"
                      )
 
     constructor(
-            precioDia : Int , gps : Boolean , type : String , @DrawableRes imagen : Int
+            precioDia : Int ,
+            gps : Boolean ,
+            type : String ,
+            @DrawableRes
+            imagen : Int
                ) : this()
 
     constructor(precioDia : Int , gps : Boolean , type : String) : this()
