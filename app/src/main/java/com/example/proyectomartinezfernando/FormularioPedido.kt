@@ -1,5 +1,6 @@
 package com.example.proyectomartinezfernando
 
+import android.provider.ContactsContract.CommonDataKinds.StructuredName
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,9 @@ fun CrearPedido(
         onElegirVehiculo : (Vehiculo) -> Unit ,
         onElegirGPS : (Boolean) -> Unit ,
         precioFinal : Int ,
-        gps : Boolean
+        gps : Boolean ,
+        dias : String ,
+        vehiculo : Vehiculo
                ) {
     Column(
         modifier = modifier
@@ -61,7 +64,7 @@ fun CrearPedido(
 
         FormularioPedido(
             onElegirDiasAlquiler , onElegirVehiculo , precioFinal , modifier ,
-            onElegirGPS , gps
+            onElegirGPS , gps , dias , vehiculo
                         )
 
 
@@ -84,12 +87,16 @@ private fun FormularioPedido(
         precioFinal : Int ,
         modifier : Modifier ,
         onElegirGPS : (Boolean) -> Unit ,
-        gps : Boolean
+        gps : Boolean , dias : String ,
+        vehiculo : Vehiculo
                             ) {
-    ElegirVehiculo(onElegirVehiculo = onElegirVehiculo , gps = gps , onElegirGPS = onElegirGPS)
+    ElegirVehiculo(
+        onElegirVehiculo = onElegirVehiculo , gps = gps , onElegirGPS = onElegirGPS ,
+        vehiculo = vehiculo
+                  )
     HorizontalDivider()
     /*Campo dias completado*/
-    CampoDias(modifier = modifier , onElegirDiasAlquiler)
+    CampoDias(modifier = modifier , onElegirDiasAlquiler , dias)
 
     HorizontalDivider()
     Row {
@@ -101,17 +108,22 @@ private fun FormularioPedido(
 @Composable
 private fun ElegirVehiculo(
         onElegirVehiculo : (Vehiculo) -> Unit , onElegirGPS : (Boolean) -> Unit ,
-        gps : Boolean
+        gps : Boolean , vehiculo : Vehiculo
                           ) {
-
     val listVehiculo = listOf(
         R.string.coche ,
         R.string.moto ,
         R.string.patinete
                              )
+    val vehiculoActual = when (vehiculo) {
+        is Coche -> listVehiculo[0]
+        is Moto -> listVehiculo[1]
+        is Patin -> listVehiculo[2]
+        else -> listVehiculo[0]
+    }
     var vehiAux by remember { mutableStateOf(Vehiculo()) }
     val obtenerVehiculo : (Vehiculo) -> Unit = { vehiAux = it }
-    val (vehiculoElegido , onVehiculoElegido) = remember { mutableIntStateOf(listVehiculo[0]) }
+    val (vehiculoElegido , onVehiculoElegido) = remember { mutableIntStateOf(vehiculoActual) }
     var vehiculoElegido1 = vehiculoElegido
     Column {
         Row {
@@ -140,7 +152,7 @@ private fun ElegirVehiculo(
                 verticalArrangement = Arrangement.SpaceAround ,
                 horizontalAlignment = Alignment.CenterHorizontally
                   ) {
-                Gps(onElegirGPS = onElegirGPS)
+                Gps(onElegirGPS = onElegirGPS , selected = gps)
             }
         }
         Row {
@@ -183,9 +195,7 @@ fun tipoMoto() : String {
     val tiposMotos = listOf(R.string._250 , R.string._125 , R.string._50)
     val (tipoMoto , onEleccion) = remember {
         mutableIntStateOf(
-            tiposMotos.indexOf(
-                tiposMotos[0]
-                              )
+            tiposMotos[0]
                          )
     }
 
@@ -279,8 +289,8 @@ fun TipoCoche(onCambiarTipo : (String) -> Unit) {
 }
 
 @Composable
-fun Gps(onElegirGPS : (Boolean) -> Unit) {
-    var gps by remember { mutableStateOf(false) }
+fun Gps(onElegirGPS : (Boolean) -> Unit , selected : Boolean) {
+    var gps by remember { mutableStateOf(selected) }
     // Opción 1: True
     Row(
         modifier = Modifier.fillMaxWidth() ,
@@ -300,8 +310,8 @@ fun Gps(onElegirGPS : (Boolean) -> Unit) {
 }
 
 @Composable
-fun CampoDias(modifier : Modifier , onElegirDiasAlquiler : (String) -> Unit) {
-    var dias by remember { mutableStateOf("") }
+fun CampoDias(modifier : Modifier , onElegirDiasAlquiler : (String) -> Unit , diasP : String) {
+    var dias by remember { mutableStateOf(diasP) }
     TextField(
         value = dias ,
         onValueChange = {

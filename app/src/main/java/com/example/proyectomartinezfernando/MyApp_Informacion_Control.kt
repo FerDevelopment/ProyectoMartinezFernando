@@ -114,7 +114,9 @@ fun MyApp(
                     gps = pedidoUIState.gps ,
                     onElegirGPS = {
                         pedidoViewModel.actualizarGPS(it)
-                    }
+                    } ,
+                    dias = pedidoUIState.dias.toString() ,
+                    vehiculo = pedidoUIState.vehiculo
                            )
             }
             composable(Pantallas.FormularioPago.name) {

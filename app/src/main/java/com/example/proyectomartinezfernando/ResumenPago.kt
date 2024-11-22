@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.proyectomartinezfernando.data.Tarjeta
 
+//TODO Cambiar la vista para mostrar mejor la información, al volver atras recuperar información
 @Composable
 fun ResumenPago(
         modifier : Modifier ,

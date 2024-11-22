@@ -1,5 +1,6 @@
 package com.example.proyectomartinezfernando.datos
 
+import android.util.Log
 import com.example.proyectomartinezfernando.data.Pedido
 
 class CargarDatos {
@@ -27,6 +28,7 @@ class CargarDatos {
                                              )
 
     fun precioCoche(type : String) : Int {
+        Log.e("Tipo entrante", type)
         return when (type) {
             "die" -> 25
             "gas " -> 20
