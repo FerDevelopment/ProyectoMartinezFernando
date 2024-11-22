@@ -1,5 +1,6 @@
 package com.example.proyectomartinezfernando
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -102,13 +103,14 @@ private fun ElegirVehiculo(
         onElegirVehiculo : (Vehiculo) -> Unit , onElegirGPS : (Boolean) -> Unit ,
         gps : Boolean
                           ) {
+
     val listVehiculo = listOf(
         R.string.coche ,
         R.string.moto ,
         R.string.patinete
                              )
     var vehiAux by remember { mutableStateOf(Vehiculo()) }
-    onElegirVehiculo(vehiAux)
+    val obtenerVehiculo : (Vehiculo) -> Unit = { vehiAux = it }
     val (vehiculoElegido , onVehiculoElegido) = remember { mutableIntStateOf(listVehiculo[0]) }
     var vehiculoElegido1 = vehiculoElegido
     Column {
@@ -144,10 +146,10 @@ private fun ElegirVehiculo(
         Row {
             Column {
                 HorizontalDivider()
-                vehiAux = when (listVehiculo.indexOf(vehiculoElegido)) {
-                    0 -> formularioCoche(gps)
-                    1 -> formularioMoto(gps)
-                    2 -> formularioPatinete(gps)
+                when (listVehiculo.indexOf(vehiculoElegido1)) {
+                    0 -> FormularioCoche(obtenerVehiculo , gps)
+                    1 -> FormularioMoto(obtenerVehiculo , gps)
+                    2 -> FormularioPatinete(obtenerVehiculo , gps)
                     else -> {
                         Vehiculo()
                     }
@@ -156,21 +158,24 @@ private fun ElegirVehiculo(
         }
     }
 
+    FuncionesComunes().SacarInfoVehiculo(vehiAux)
+
+    onElegirVehiculo(vehiAux)
 }
 
 @Composable
-fun formularioPatinete(gps : Boolean) : Vehiculo {
+fun FormularioPatinete(obtenerVehiculo : (Vehiculo) -> Unit , gps : Boolean) {
     val type = "unic"
     HorizontalDivider()
-    return Patin(type = type , gps = gps)
+    obtenerVehiculo(Patin(type = type , gps = gps))
 }
 
 @Composable
-fun formularioMoto(gps : Boolean) : Vehiculo {
+fun FormularioMoto(obtenerVehiculo : (Vehiculo) -> Unit , gps : Boolean) {
     val type : String = tipoMoto()
     HorizontalDivider()
 
-    return Moto(type = type , gps = gps)
+    obtenerVehiculo(Moto(type = type , gps = gps))
 }
 
 @Composable
@@ -220,14 +225,17 @@ fun tipoMoto() : String {
 }
 
 @Composable
-fun formularioCoche(gps : Boolean) : Vehiculo {
-    val type : String = tipoCoche()
+fun FormularioCoche(obtenerVehiculo : (Vehiculo) -> Unit , gps : Boolean) {
+    var type : String by remember { mutableStateOf("15") }
+    TipoCoche { type = it }
+    Log.e("Ni idea" , type)
     HorizontalDivider()
-    return Coche(type = type , gps = gps)
+
+    obtenerVehiculo(Coche(type = type , gps = gps))
 }
 
 @Composable
-fun tipoCoche() : String {
+fun TipoCoche(onCambiarTipo : (String) -> Unit) {
     val tiposCoche = listOf(R.string.diesel , R.string.gasolina , R.string.electrico)
     val (tipoCoche , onEleccion) = remember { mutableIntStateOf(tiposCoche[0]) }
 
@@ -257,12 +265,16 @@ fun tipoCoche() : String {
             }
         }
     }
-    return when (tiposCoche.indexOf(tipoCoche)) {
+    Log.e("Tipo coche Set" , tipoCoche.toString())
+    Log.e("Tipo coche Set Lista" , tiposCoche[0].toString())
+    Log.e("IndexOF" , tiposCoche.indexOf(tipoCoche).toString())
+    val type = when (tiposCoche.indexOf(tipoCoche)) {
         0 -> CargarDatos().COCHELISTATIPOS[0]
         1 -> CargarDatos().COCHELISTATIPOS[1]
         2 -> CargarDatos().COCHELISTATIPOS[2]
         else -> "null"
     }
+    onCambiarTipo(type)
 
 }
 
@@ -294,7 +306,7 @@ fun CampoDias(modifier : Modifier , onElegirDiasAlquiler : (String) -> Unit) {
         value = dias ,
         onValueChange = {
             dias = it
-            onElegirDiasAlquiler(it)
+            onElegirDiasAlquiler(dias)
         } ,
         singleLine = true ,
         label = { Text(text = stringResource(R.string.dias)) } ,

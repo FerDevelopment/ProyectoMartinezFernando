@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.proyectomartinezfernando.data.Pedido
@@ -24,9 +25,7 @@ class PedidoViewModel : ViewModel() {
     private val _totalPedido = _uiState.value.totalPagar
     var totalPedido by mutableIntStateOf(_totalPedido)
         private set
-    private val _gps = _uiState.value.gps
-    var gps by mutableStateOf(_gps)
-        private set
+    var gps by mutableStateOf(uiState.value.vehiculo.gps)
     var type by mutableStateOf(_uiState.value.vehiculo.type)
 
     fun actualizarVehiculo(vehiculoActual : Vehiculo) {
@@ -52,8 +51,8 @@ class PedidoViewModel : ViewModel() {
 
     private fun actualizarTotal() {
         actualizarPrecioDia()
-        val dias = _uiState.value.dias
-        val precioDia = _uiState.value.vehiculo.precioDia
+        val dias by mutableIntStateOf(_uiState.value.dias)
+        val precioDia by mutableIntStateOf(_uiState.value.vehiculo.precioDia)
         totalPedido = dias * precioDia
 
         _uiState.update { estado ->
@@ -73,6 +72,7 @@ class PedidoViewModel : ViewModel() {
     }
 
     private fun actualizarPrecioDia() {
+        Log.e("Tipo Vehiculo" , _uiState.value.vehiculo.type)
         when (_uiState.value.vehiculo) {
             is Coche -> actuPrecioCoche()
             is Moto -> actuPrecioMoto()
@@ -82,7 +82,7 @@ class PedidoViewModel : ViewModel() {
     }
 
     private fun actuPrecioPatin() {
-        var precioDiaAux = 0
+        var precioDiaAux by mutableIntStateOf(0)
         val vehiculoAux = _uiState.value.vehiculo
         precioDiaAux = if (gps) {
             CargarDatos().GPSPRICE + CargarDatos().precioPatinete(type)
@@ -101,7 +101,7 @@ class PedidoViewModel : ViewModel() {
     }
 
     private fun actuPrecioCoche() {
-        var precioDiaAux = 0
+        var precioDiaAux by mutableIntStateOf(0)
         val vehiculoAux = _uiState.value.vehiculo
         precioDiaAux = if (gps) {
             CargarDatos().GPSPRICE + CargarDatos().precioCoche(type)
@@ -109,7 +109,10 @@ class PedidoViewModel : ViewModel() {
         else {
             CargarDatos().precioCoche(type)
         }
-
+        Log.e("Hay gps?" , gps.toString())
+        Log.e("Precio del tipo" , CargarDatos().precioCoche(type).toString())
+        Log.e("Precio dentro de ActuPrecio" , precioDiaAux.toString())
+        Log.e("PrecioCoche dentro de ActuPrecio" , vehiculoAux.precioDia.toString())
         vehiculoAux.precioDia = precioDiaAux
 
         _uiState.update { estado ->
@@ -140,11 +143,16 @@ class PedidoViewModel : ViewModel() {
     fun actualizarGPS(gpsSelect : Boolean) {
         val vehiAux = _uiState.value.vehiculo
         vehiAux.gps = gpsSelect
+        Log.e("Cansado" , gpsSelect.toString())
+        Log.e("Cansado1" , vehiAux.gps.toString())
         _uiState.update { estado ->
             estado.copy(
                 gps = gpsSelect ,
                 vehiculo = vehiAux
                        )
         }
+        Log.e("Cansado2" , _uiState.value.vehiculo.gps.toString())
+
+        actualizarTotal()
     }
 }
