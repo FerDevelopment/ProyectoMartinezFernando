@@ -24,7 +24,7 @@ fun ResumenPedido(
 ) {
    Column(
       modifier
-         .padding(15.dp)
+         .padding(10.dp)
          .fillMaxHeight(),
       verticalArrangement = Arrangement.SpaceBetween
    ) {
