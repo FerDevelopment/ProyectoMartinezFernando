@@ -49,7 +49,7 @@ class FuncionesComunes {
             @StringRes campos : List<Int> ,
             contenido : List<String>
                                 ) {
-        for (i in contenido.indices) {
+        for (i in campos.indices) {
             Row {
                 Text(
                     text = stringResource(campos[i]) + ": " ,
@@ -112,8 +112,7 @@ class FuncionesComunes {
     fun SacarInfoVehiculo(vehiculo : Vehiculo) {
         val campos = listOf(
             R.string.gps ,
-            R.string.tipo ,
-            R.string.ppd
+            R.string.tipo
                            )
         val contenido = vehiculo.info
         val fontSize = textTmTarjResum

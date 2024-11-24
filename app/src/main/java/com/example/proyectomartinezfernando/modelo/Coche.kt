@@ -1,7 +1,7 @@
 package com.example.proyectomartinezfernando.modelo
 
 class Coche(
-        precioDia : Int = 0 , gps : Boolean = false , type : String = ""
+        precioDia : Int = 0 , gps : Boolean = false , type : String = "die"
            ) : Vehiculo(precioDia , gps , type) {
 }
 

@@ -7,18 +7,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.em
-import com.example.proyectomartinezfernando.datos.CargarDatos
+
+import com.example.proyectomartinezfernando.data.Pedido
+
 
 @Composable
-fun ListaPedidos(modifier : Modifier = Modifier , onVolverInicio : () -> Unit) {
+fun ListaPedidos(modifier : Modifier = Modifier , onVolverInicio : () -> Unit, pedidos: List<Pedido>) {
     Column(modifier = modifier) {
-        Text("Pedidos" , fontSize = 7.em)
-        PedidosOut()
+
+        PedidosOut(pedidos)
         FloatingActionButton(
             onClick = onVolverInicio
                             ) {
@@ -28,9 +29,9 @@ fun ListaPedidos(modifier : Modifier = Modifier , onVolverInicio : () -> Unit) {
 }
 
 @Composable
-fun PedidosOut() {
+fun PedidosOut( pedidos: List<Pedido>) {
     LazyColumn {
-        items(CargarDatos().cargarLista()) { pedido ->
+        items(pedidos) { pedido ->
             FuncionesComunes().ImprimirCardPedido(pedido)
         }
     }

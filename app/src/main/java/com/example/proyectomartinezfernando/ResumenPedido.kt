@@ -17,38 +17,38 @@ import com.example.proyectomartinezfernando.data.Pedido
 
 @Composable
 fun ResumenPedido(
-        modifier : Modifier ,
-        onVolverCrearPedido : () -> Unit ,
-        onIrFomularioPago : () -> Unit ,
-        pedido : Pedido
-                 ) {
-    Column(
-        modifier
-                .padding(15.dp)
-                .fillMaxHeight() ,
-        verticalArrangement = Arrangement.SpaceBetween
-          ) {
-        FuncionesComunes().ImprimirCardPedido(pedido)
-        Botones(onVolverCrearPedido , onIrFomularioPago)
-    }
+   modifier: Modifier,
+   onVolverCrearPedido: () -> Unit,
+   onIrFomularioPago: () -> Unit,
+   pedido: Pedido
+) {
+   Column(
+      modifier
+         .padding(15.dp)
+         .fillMaxHeight(),
+      verticalArrangement = Arrangement.SpaceBetween
+   ) {
+      FuncionesComunes().ImprimirCardPedido(pedido)
+      Botones(onVolverCrearPedido, onIrFomularioPago)
+   }
 
 }
 
 @Composable
-private fun Botones(onCrearPedido : () -> Unit , onIrFomularioPago : () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth() ,
-        horizontalArrangement = Arrangement.SpaceAround
-       ) {
-        Button(
-            onClick = onCrearPedido
-              ) {
-            Text(stringResource(R.string.cambiar_datos))
-        }
+private fun Botones(onCrearPedido: () -> Unit, onIrFomularioPago: () -> Unit) {
+   Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceAround
+   ) {
+      Button(
+         onClick = onCrearPedido
+      ) {
+         Text(stringResource(R.string.cambiar_datos))
+      }
 
 
-        Button(modifier = Modifier.width(125.dp) , onClick = onIrFomularioPago) {
-            Text(stringResource(R.string.pagar))
-        }
-    }
+      Button(modifier = Modifier.width(125.dp), onClick = onIrFomularioPago) {
+         Text(stringResource(R.string.pagar))
+      }
+   }
 }

@@ -44,7 +44,7 @@ fun TarjetaUser(user : User) {
         modifier = Modifier
                 .fillMaxWidth()
         ) {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(5.dp)) {
             Row(
                 modifier = Modifier
                         .padding(10.dp)

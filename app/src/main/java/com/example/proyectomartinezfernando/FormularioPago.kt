@@ -21,8 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.example.proyectomartinezfernando.data.Tarjeta
@@ -32,13 +34,15 @@ fun FormularioPago(
         modifier : Modifier ,
         onVolverResumenPedido : () -> Unit ,
         onIrResumenPago : () -> Unit ,
-        onAgregarTarjeta : (Tarjeta) -> Unit
+        onAgregarTarjeta : (Tarjeta) -> Unit,
+        tarjeta: Tarjeta
                   ) {
     val tiposTarjeta = listOf("VISA" , "MasterCard" , "Euro 6000")
-    var tipoTarjeta by remember { mutableStateOf("") }
-    var numeroTarjeta by remember { mutableStateOf("") }
+
+    var tipoTarjeta by remember { mutableStateOf(tarjeta.tipo) }
+    var numeroTarjeta by remember { mutableStateOf(tarjeta.numero) }
     var cvc by remember { mutableStateOf("") }
-    var caducidad by remember { mutableStateOf("") }
+    var caducidad by remember { mutableStateOf(tarjeta.caducidad) }
 
     Column(
         modifier = modifier
@@ -51,7 +55,7 @@ fun FormularioPago(
             fontSize = 4.em ,
             fontWeight = FontWeight.Bold
             )
-        // Tipo de tarjeta
+
         Text(
             text = stringResource(R.string.tipo_de_tarjeta) ,
             fontWeight = FontWeight.Bold ,
@@ -106,11 +110,14 @@ fun FormularioPago(
                 value = cvc ,
                 onValueChange = { cvc = it } ,
                 label = { Text(stringResource(R.string.cvc)) } ,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number) ,
-                modifier = Modifier
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword) ,
+
+               modifier = Modifier
                         .padding(10.dp)
                         .weight(1f)
-                     )
+
+               )
+
         }
         Row(
             modifier = Modifier.fillMaxSize() ,

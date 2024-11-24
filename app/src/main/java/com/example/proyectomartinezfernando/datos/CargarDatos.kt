@@ -6,7 +6,7 @@ import com.example.proyectomartinezfernando.data.Pedido
 class CargarDatos {
     val GPSPRICE : Int = 5
     val COCHELISTATIPOS = listOf(
-        "die" , "gas " , "ele "
+        "die" , "gas" , "ele"
                                 )
     val MOTOSLISTATIPOS = listOf(
         "250" ,
@@ -15,14 +15,6 @@ class CargarDatos {
                                 )
 
     fun cargarLista() : List<Pedido> = listOf(
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
-        Pedido() ,
         Pedido() ,
         Pedido() ,
                                              )
@@ -47,6 +39,6 @@ class CargarDatos {
     }
 
     fun precioPatinete(type : String) : Int {
-        return 5;
+        return 5
     }
 }
