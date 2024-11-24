@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.proyectomartinezfernando.data.Pedido
 import com.example.proyectomartinezfernando.ui.viewmodel.PedidoViewModel
 
 enum class Pantallas(
@@ -33,7 +34,8 @@ enum class Pantallas(
    FormularioPago(titulo = R.string.formulario_de_pago),
    ListaPedidos(titulo = R.string.lista_pedidos),
    ResumenPedido(titulo = R.string.resumen_pedido),
-   ResumenPago(titulo = R.string.resumen_de_pago)
+   ResumenPago(titulo = R.string.resumen_de_pago),
+   PedidoVistaCompleto(titulo = R.string.pedido_completo)
 
 }
 
@@ -43,7 +45,6 @@ private fun AppTopBar(
    pantallaActual: Pantallas,
    puedeNavegarAtras: Boolean,
    onNavegarAtras: () -> Unit,
-   modifier: Modifier = Modifier
 ) {
    TopAppBar(
       title = { Text(text = stringResource(id = pantallaActual.titulo)) },
@@ -77,6 +78,7 @@ fun MyApp(
    val pantallaActual = Pantallas.valueOf(
       pilaRetroceso?.destination?.route ?: Pantallas.Inicio.name
    )
+   var pedidoParaVer = Pedido()
    val volverAtras: () -> Unit = {
       navController.navigateUp()
    }
@@ -120,7 +122,8 @@ fun MyApp(
             )
          }
          composable(Pantallas.FormularioPago.name) {
-            FormularioPago(modifier, onVolverResumenPedido = volverAtras,
+            FormularioPago(
+               modifier, onVolverResumenPedido = volverAtras,
                onIrResumenPago =
                {
                   navController.navigate(Pantallas.ResumenPago.name)
@@ -132,7 +135,11 @@ fun MyApp(
          composable(Pantallas.ListaPedidos.name) {
             ListaPedidos(
                modifier = modifier,
-               onVolverInicio = volverAtras, pedidos = pedidoViewModel.listaPedido
+               onVolverInicio = volverAtras, pedidos = pedidoViewModel.listaPedido,
+               onVerPedido = {
+                  pedidoParaVer = it
+                  navController.navigate(Pantallas.PedidoVistaCompleto.name)
+               }
             )
          }
          composable(Pantallas.ResumenPedido.name) {
@@ -140,7 +147,8 @@ fun MyApp(
                modifier,
                onVolverCrearPedido = volverAtras,
                onIrFomularioPago = { navController.navigate(Pantallas.FormularioPago.name) },
-               pedido = pedidoUIState)
+               pedido = pedidoUIState,
+            )
          }
          composable(Pantallas.ResumenPago.name) {
             ResumenPago(
@@ -155,6 +163,9 @@ fun MyApp(
                },
                tarjeta = pedidoUIState.tarjeta
             )
+         }
+         composable(Pantallas.PedidoVistaCompleto.name) {
+            VerPedidoCompleto(pedido = pedidoParaVer)
          }
       }
    }

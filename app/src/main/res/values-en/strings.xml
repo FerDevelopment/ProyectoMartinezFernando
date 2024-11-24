@@ -39,4 +39,6 @@
     <string name="ir_atras">Come back</string>
     <string name="usuarioInfo">User Info</string>
     <string name="bonton_volver_atras">Come back button</string>
+    <string name="pedido_completo">Complete order</string>
+    <string name="mm_aaaa">MM/YY</string>
 </resources>

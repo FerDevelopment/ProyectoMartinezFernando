@@ -335,7 +335,6 @@ fun CampoDias(modifier: Modifier, onElegirDiasAlquiler: (String) -> Unit, diasP:
       label = { Text(text = stringResource(R.string.dias)) },
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
       modifier = modifier.padding(0.dp),
-
    )
 
 }

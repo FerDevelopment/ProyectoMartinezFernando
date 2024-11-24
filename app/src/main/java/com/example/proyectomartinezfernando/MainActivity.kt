@@ -7,14 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import com.example.proyectomartinezfernando.ui.theme.ProyectoMartinezFernandoTheme
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState : Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            ProyectoMartinezFernandoTheme {
-                MyApp()
-            }
-        }
-    }
+   override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      enableEdgeToEdge()
+      setContent {
+         ProyectoMartinezFernandoTheme {
+            MyApp()
+         }
+      }
+   }
 }
 

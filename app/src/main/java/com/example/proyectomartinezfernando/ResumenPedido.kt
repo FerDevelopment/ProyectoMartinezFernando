@@ -20,7 +20,7 @@ fun ResumenPedido(
    modifier: Modifier,
    onVolverCrearPedido: () -> Unit,
    onIrFomularioPago: () -> Unit,
-   pedido: Pedido
+   pedido: Pedido,
 ) {
    Column(
       modifier
@@ -28,7 +28,7 @@ fun ResumenPedido(
          .fillMaxHeight(),
       verticalArrangement = Arrangement.SpaceBetween
    ) {
-      FuncionesComunes().ImprimirCardPedido(pedido)
+      VerPedidoCompleto(pedido, modifier = modifier)
       Botones(onVolverCrearPedido, onIrFomularioPago)
    }
 

@@ -3,8 +3,6 @@ package com.example.proyectomartinezfernando.ui.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.proyectomartinezfernando.data.Pedido
@@ -21,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class PedidoViewModel : ViewModel() {
-  private val user: User = User(
+   private val user: User = User(
       nombreUser = "Furtamelons",
       apellido = "Martinez",
       telefono = "633693915",
@@ -29,11 +27,10 @@ class PedidoViewModel : ViewModel() {
       nombre = "Fernando"
    )
    val listaPedido: MutableList<Pedido> = CargarDatos().cargarLista().toMutableList()
-   private val _uiState = MutableStateFlow(Pedido( user = user))
+   private val _uiState = MutableStateFlow(Pedido(user = user))
    val uiState: StateFlow<Pedido> = _uiState.asStateFlow()
    private val _totalPedido = _uiState.value.totalPagar
-   var totalPedido by mutableIntStateOf(_totalPedido)
-      private set
+   private var totalPedido by mutableIntStateOf(_totalPedido)
 
    fun actualizarVehiculo(vehiculoActual: Vehiculo) {
       _uiState.update { estado ->
@@ -154,8 +151,8 @@ class PedidoViewModel : ViewModel() {
    }
 
    fun anyadirPedido(pedido: Pedido) {
-   Log.e("Cantidad1", listaPedido.size.toString())
-     listaPedido.add(pedido)
-      Log.e("Cantidad2",listaPedido.size.toString())
+      Log.e("Cantidad1", listaPedido.size.toString())
+      listaPedido.add(pedido)
+      Log.e("Cantidad2", listaPedido.size.toString())
    }
 }

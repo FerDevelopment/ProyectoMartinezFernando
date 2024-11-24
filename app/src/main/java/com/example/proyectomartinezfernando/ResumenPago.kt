@@ -16,41 +16,40 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.proyectomartinezfernando.data.Tarjeta
 
-//TODO Cambiar la vista para mostrar mejor la información, al volver atras recuperar información
 @Composable
 fun ResumenPago(
-        modifier : Modifier ,
-        onVolverFormularioPago : () -> Unit ,
-        onPagar : () -> Unit ,
-        tarjeta : Tarjeta
-               ) {
-    Column(
-        modifier = modifier
-                .padding(15.dp)
-                .fillMaxHeight() ,
-        verticalArrangement = Arrangement.SpaceBetween
-          ) {
-        FuncionesComunes().CardTarjeta(modifier , tarjeta)
+   modifier: Modifier,
+   onVolverFormularioPago: () -> Unit,
+   onPagar: () -> Unit,
+   tarjeta: Tarjeta
+) {
+   Column(
+      modifier = modifier
+         .padding(15.dp)
+         .fillMaxHeight(),
+      verticalArrangement = Arrangement.SpaceBetween
+   ) {
+      FuncionesComunes().CardTarjeta(modifier, tarjeta)
 
-        Row(
-            modifier = Modifier.fillMaxSize() ,
-            horizontalArrangement = Arrangement.SpaceAround ,
-            verticalAlignment = Alignment.Bottom
-           ) {
-            Botones(onVolverFormularioPago , onPagar)
-        }
-    }
+      Row(
+         modifier = Modifier.fillMaxSize(),
+         horizontalArrangement = Arrangement.SpaceAround,
+         verticalAlignment = Alignment.Bottom
+      ) {
+         Botones(onVolverFormularioPago, onPagar)
+      }
+   }
 
 }
 
 @Composable
-private fun Botones(onVolverFormularioPago : () -> Unit , onPagar : () -> Unit) {
-    Button(onClick = onVolverFormularioPago) {
-        Text(stringResource(R.string.cambiar_datos_tarjeta))
-    }
+private fun Botones(onVolverFormularioPago: () -> Unit, onPagar: () -> Unit) {
+   Button(onClick = onVolverFormularioPago) {
+      Text(stringResource(R.string.cambiar_datos_tarjeta))
+   }
 
-    Button(modifier = Modifier.width(125.dp) , onClick = onPagar) {
-        Text(stringResource(R.string.pagar))
-    }
+   Button(modifier = Modifier.width(125.dp), onClick = onPagar) {
+      Text(stringResource(R.string.pagar))
+   }
 
 }

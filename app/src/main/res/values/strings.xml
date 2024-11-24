@@ -46,4 +46,6 @@
     <string name="total_de_pedido">Total de pedido: %1$s</string>
     <string name="ir_atras">Ir atras</string>
     <string name="bonton_volver_atras">Bonton volver atras</string>
+    <string name="pedido_completo">Pedido Completo</string>
+    <string name="mm_aaaa">MM/AA</string>
 </resources>
